@@ -584,7 +584,7 @@ img { display: block; max-width: 100%; }
   position: absolute; inset: 0;
   background:
     linear-gradient(180deg, rgba(5, 12, 18, .5) 0%, rgba(5, 12, 18, .15) 45%, rgba(5, 12, 18, .25) 100%),
-    url("../img/withgrateful.jpg") center 60% / cover no-repeat,
+    url("../img/withgrateful-deep.jpg") center 60% / cover no-repeat,
     #1d2a33;
 }
 .promise__text {
