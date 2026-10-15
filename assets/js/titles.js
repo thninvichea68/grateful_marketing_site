@@ -11,7 +11,7 @@
 
   const TITLES = '.sub-hero__title, .page-title';
 
-  // wait for Lay Grotesk so lines are measured with the real font
+  // wait for GS Compressed so lines are measured with the real font
   document.fonts.ready.then(() => {
     document.querySelectorAll(TITLES).forEach((el) => {
       SplitText.create(el, {
