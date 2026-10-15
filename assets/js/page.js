@@ -32,6 +32,44 @@
     }
   }
 
+  // Scroll-scrubbed text fill: words start ghosted (CSS) and darken one by one as the text scrolls up
+  if (window.ScrollTrigger) {
+    const cyan = getComputedStyle(document.documentElement).getPropertyValue('--cyan').trim();
+    document.querySelectorAll('[data-fill]').forEach((el) => {
+      const words = [];
+      (function split(node) {
+        [...node.childNodes].forEach((child) => {
+          if (child.nodeType === 3) {
+            const frag = document.createDocumentFragment();
+            child.textContent.split(/(\s+)/).forEach((part) => {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+              const w = document.createElement('span');
+              w.className = 'w';
+              w.textContent = part;
+              frag.appendChild(w);
+              words.push(w);
+            });
+            child.replaceWith(frag);
+          } else if (child.nodeType === 1) {
+            split(child);
+          }
+        });
+      })(el);
+      el.classList.add('is-split');
+
+      const color = getComputedStyle(el).color;
+      const fill = gsap.timeline({
+        scrollTrigger: { trigger: el, start: 'top 85%', end: 'bottom 45%', scrub: 0.6 }
+      });
+      // each word flashes cyan, then settles to the text colour (as on the homepage)
+      words.forEach((w, i) => {
+        fill.to(w, { color: cyan, duration: 0.25, ease: 'none' }, i * 0.1)
+            .to(w, { color, duration: 0.25, ease: 'none' }, i * 0.1 + 0.25);
+      });
+    });
+  }
+
   // Photos drift inside their frames while scrolling (frames clip the overflow)
   if (window.ScrollTrigger) {
     document.querySelectorAll('[data-parallax] img').forEach((img) => {
